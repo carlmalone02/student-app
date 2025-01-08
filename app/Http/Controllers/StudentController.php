@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
-use Barryvdh\DomPDF\Facade\PDF;
+// use Barryvdh\DomPDF\Facade\PDF;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -92,9 +92,9 @@ class StudentController extends Controller
     
     public function generateCert(Request $request)
     {
-        $students=Student::where('grade', '>=', 60)->get();
-        $pdf=PDF::loadView('certificate', compact('students'))->setPaper('a4', 'landscape');
+        $students = Student::where('grade', '>=', 60)->get();
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('certificate', compact('students'))->setPaper('a4', 'landscape');
         return $pdf->download('certificates.pdf');
     }
-
 }
